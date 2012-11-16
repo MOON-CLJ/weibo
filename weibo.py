@@ -33,6 +33,7 @@ class Client(object):
 
         self.access_token = None
         self.expires_at = None
+        self.uid = None
         self.session = None
 
         # activate client directly if given acccess_token and expires_at
@@ -53,6 +54,7 @@ class Client(object):
         This token_info can be stored to directly activate client at next time.
         """
         return {
+            'uid': self.uid,
             'access_token': self.access_token,
             'expires_at': self.expires_at
         }
@@ -79,6 +81,7 @@ class Client(object):
         tk = json.loads(response.content)
 
         self._assert_error(tk)
+        self.uid = tk['uid']
         self.set_token(tk['access_token'], time.time() + int(tk['expires_in']))
 
     def set_token(self, access_token, expires_at):

@@ -89,13 +89,12 @@ class Client(object):
         """
         self.access_token = access_token
         self.expires_at = expires_at
-        self.session = requests.session(
-            params={'access_token': self.access_token})
+        self.session = requests.session()
+        self.session.params = {'access_token': self.access_token}
 
     def _assert_error(self, d):
         if 'error_code' in d and 'error' in d:
-            raise RuntimeError("[%s] %s, %s" % (
-                d['error_code'], d['error'], d['error_description']))
+            raise RuntimeError("[%s] %s" % (d['error_code'], d['error']))
 
     def get(self, uri, **kwargs):
         """
